@@ -32,7 +32,7 @@ def main():
     )
 
     password_guess = st.text_input('Enter a password to gain access to this app', key='password_guess')
-    if password_guess != 'streamlit_password':
+    if password_guess != st.secrets['password']:
         st.stop()
 
 
