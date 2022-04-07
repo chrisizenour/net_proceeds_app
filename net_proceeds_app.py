@@ -24,9 +24,21 @@ def main():
     with col3:
         st.write('')
 
+    st.markdown('**Disclaimer**')
     st.markdown(
         '''
-        ## Comparative Market Analysis (CMA) Data Inputs
+    *These estimates are not guaranteed and may not include escrows. Escrow balances are reimbursed by the existing lender. Taxes, rents & association dues are pro-rated at settlement. Under Virginia Law, the seller's proceeds may not be available for up to 2 business days following recording of the deed. Seller acknowledges receipt of this statement.*
+    '''
+    )
+
+    password_guess = st.text_input('Enter a password to gain access to this app', key='password_guess')
+    if password_guess != 'streamlit_password':
+        st.stop()
+
+
+    st.markdown(
+        '''
+        ##### Comparative Market Analysis (CMA) Data Inputs
         This application is used to capture pertinent data points related to a CMA, which will then:
         - Calculate the Estimated Total Net Proceeds
         - Produce the Estimated Total Net Proceeds form in Excel
@@ -50,6 +62,7 @@ def main():
 
     if 'preparer' not in st.session_state:
         # st.session_state['cma_form'] = False
+        # st.session_state['password_guess'] = ''
         st.session_state['preparer'] = ''
         st.session_state['prep_date'] = date.today()
         st.session_state['seller_name'] = ''
@@ -61,7 +74,7 @@ def main():
         st.session_state['annual_hoa_condo_amt'] = 0
         st.session_state['prorated_hoa_condo_amt'] = 0
         st.session_state['rec_list_price'] = 0
-        st.session_state['down_payment_pct'] = 0.0
+        # st.session_state['down_payment_pct'] = 0.0
         st.session_state['closing_subsidy_radio'] = 'Percent of Recommended List Price'
         st.session_state['closing_subsidy_flat_amt'] = 0
         st.session_state['closing_subsidy_pct'] = 0.0
@@ -86,7 +99,7 @@ def main():
         st.session_state.prep_date = st.session_state.prep_date
         st.session_state.prorated_tax_amt = st.session_state.update_annual_tax_amt / 12 * 3
         st.session_state.prorated_hoa_condo_amt = st.session_state.update_annual_hoa_condo_amt / 12 * 3
-        st.session_state.down_payment_pct = st.session_state.update_down_payment_pct / 100
+        # st.session_state.down_payment_pct = st.session_state.update_down_payment_pct / 100
         st.session_state.closing_subsidy_pct = st.session_state.update_closing_subsidy_pct / 100
         st.session_state.listing_company_pct = st.session_state.update_listing_company_pct / 100
         st.session_state.selling_company_pct = st.session_state.update_selling_company_pct / 100
@@ -151,12 +164,14 @@ def main():
         with buyer_data:
             st.markdown('##### **Seller-Specific Data**')
             st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
-            st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
+            # st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
             st.write('')
             st.write('')
-            st.write('Closing Cost Subsidy Choice')
-            st.markdown('** Choose One **')
-            st.write('If there is no closing cost subsidy being requested, choose one option and place on 0.0% or $0')
+            # st.write('Closing Cost Subsidy Choice')
+            # st.markdown('**Choose One**')
+            st.write('Default Closing Cost Subsidy is 0% of Recommended List Price')
+            st.write('Leave as-is if there is no Closing Cost Subsidy being requested')
+            st.write('If a Subsidy is being requested choose one option or the other and move slider as necessary')
             st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
             st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
             st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')

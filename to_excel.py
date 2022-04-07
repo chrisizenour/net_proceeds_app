@@ -182,16 +182,16 @@ def inputs_to_excel(agent,
     e8.number_format = acct_fmt
     e8.border = Border(top=thin, bottom=thin, left=thin, right=thin)
 
-    d9 = ws1['D9']
-    d9.value = 'Down Pmt (%)'
-    d9.font = Font(bold=True)
-    d9.alignment = Alignment(horizontal='right')
-
-    e9 = ws1['E9']
-    e9.value = down_payment_pct
-    e9.font = Font(bold=True)
-    e9.number_format = pct_fmt
-    e9.border = Border(top=thin, bottom=thin, left=thin, right=thin)
+    # d9 = ws1['D9']
+    # d9.value = 'Down Pmt (%)'
+    # d9.font = Font(bold=True)
+    # d9.alignment = Alignment(horizontal='right')
+    #
+    # e9 = ws1['E9']
+    # e9.value = down_payment_pct
+    # e9.font = Font(bold=True)
+    # e9.number_format = pct_fmt
+    # e9.border = Border(top=thin, bottom=thin, left=thin, right=thin)
 
     # Housing Related Cost Table
     c10 = ws1['C10']
