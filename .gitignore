@@ -1,5 +1,5 @@
-# streamlit .streamlit folder
-.streamlit
+# streamlit app password file
+secrets.toml
 
 
 
