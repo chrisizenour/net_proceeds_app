@@ -183,7 +183,7 @@ def main():
                 st.write('')
                 st.write('')
                 st.markdown('*App Default for Closing Cost Subsidy is 0% of Rec. List Price*')
-                st.markdown('*If no Closing Cost Subsidy is request, leave as-is*')
+                st.markdown('*If no Closing Cost Subsidy is requested, leave as-is*')
                 st.markdown('*If a Subsidy is requested, choose appropriate option and adjust associated slider*')
                 st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
                 st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
