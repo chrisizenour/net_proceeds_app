@@ -30,7 +30,6 @@ def main():
     instruction_container = st.container()
     form_container = st.container()
 
-
     with disclaimer_container:
         st.markdown('#### **Disclaimer**')
         st.markdown(
@@ -160,8 +159,12 @@ def main():
 
     with form_container:
         with st.form(key='cma_form'):
+            st.markdown('##### **From Preparation Data**')
             st.text_input('Enter the preparing agent\'s name', key='preparer')
             st.date_input('Enter preparation date of the form', key='prep_date')
+            st.write('')
+            st.write('---')
+            st.write('')
 
             seller_data, buyer_data = st.columns(2)
             with seller_data:
@@ -172,7 +175,6 @@ def main():
                 st.slider("Estimated Payoff - Second Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_second_trust')
                 st.slider("Annual Tax Amount ($)", 0, 25000, step=1, key='update_annual_tax_amt')
                 st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='update_annual_hoa_condo_amt')
-
 
             with buyer_data:
                 st.markdown('##### **Seller-Specific Data**')
@@ -188,6 +190,9 @@ def main():
                 st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
                 st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
                 st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
+            st.write('')
+            st.write('---')
+            st.write('')
 
             brokerage_data, closing_cost_data, misc_data = st.columns(3)
             with brokerage_data:
