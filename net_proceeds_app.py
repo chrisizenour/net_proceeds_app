@@ -158,67 +158,68 @@ def main():
         # return estimated_total_net_proceeds
 
     with form_container:
-        with st.form(key='cma_form'):
-            st.markdown('##### **From Preparation Data**')
-            st.text_input('Enter the preparing agent\'s name', key='preparer')
-            st.date_input('Enter preparation date of the form', key='prep_date')
-            st.write('')
-            st.write('---')
-            st.write('')
-
-            seller_data, buyer_data = st.columns(2)
-            with seller_data:
-                st.markdown('##### **Seller-Specific Data**')
-                st.text_input('Enter seller\'s name(s)', key='seller_name')
-                st.text_input("Enter seller's address", key='seller_address')
-                st.slider("Estimated Payoff - First Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_first_trust')
-                st.slider("Estimated Payoff - Second Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_second_trust')
-                st.slider("Annual Tax Amount ($)", 0, 25000, step=1, key='update_annual_tax_amt')
-                st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='update_annual_hoa_condo_amt')
-
-            with buyer_data:
-                st.markdown('##### **Buyer-Specific Data**')
-                st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
-                # st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
+        with st.expander('Data Entry'):
+            with st.form(key='cma_form'):
+                st.markdown('##### **From Preparation Data**')
+                st.text_input('Enter the preparing agent\'s name', key='preparer')
+                st.date_input('Enter preparation date of the form', key='prep_date')
                 st.write('')
+                st.write('---')
                 st.write('')
-                st.markdown('*App Default for Closing Cost Subsidy is 0% of Rec. List Price*')
-                st.markdown('*If no Closing Cost Subsidy is requested, leave as-is*')
-                st.markdown('*If a Subsidy is requested, choose appropriate option and adjust associated slider*')
-                st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
-                st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
-                st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
-            st.write('')
-            st.write('---')
-            st.write('')
 
-            brokerage_data, closing_cost_data, misc_data = st.columns(3)
-            with brokerage_data:
-                st.markdown('##### **Brokerage Cost Data**')
-                st.slider("Listing Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_listing_company_pct')
+                seller_data, buyer_data = st.columns(2)
+                with seller_data:
+                    st.markdown('##### **Seller-Specific Data**')
+                    st.text_input('Enter seller\'s name(s)', key='seller_name')
+                    st.text_input("Enter seller's address", key='seller_address')
+                    st.slider("Estimated Payoff - First Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_first_trust')
+                    st.slider("Estimated Payoff - Second Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_second_trust')
+                    st.slider("Annual Tax Amount ($)", 0, 25000, step=1, key='update_annual_tax_amt')
+                    st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='update_annual_hoa_condo_amt')
+
+                with buyer_data:
+                    st.markdown('##### **Buyer-Specific Data**')
+                    st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
+                    # st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
+                    st.write('')
+                    st.write('')
+                    st.markdown('*App Default for Closing Cost Subsidy is 0% of Rec. List Price*')
+                    st.markdown('*If no Closing Cost Subsidy is requested, leave as-is*')
+                    st.markdown('*If a Subsidy is requested, choose appropriate option and adjust associated slider*')
+                    st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
+                    st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
+                    st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
                 st.write('')
-                st.slider("Selling Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_selling_company_pct')
-                processing_fee = st.slider('Processing Fee Amount ($)', 0, 20000, step=1, key='processing_fee')
+                st.write('---')
+                st.write('')
 
-            with closing_cost_data:
-                st.markdown('##### **Closing Cost Data**')
-                st.slider('Settlement Fee Amount ($)', 0, 1000, step=1, key='settlement_fee')
-                st.slider('Deed Preparation Fee Amount ($)', 0, 1000, step=1, key='deed_prep_fee')
-                st.slider('Release of Liens / Trusts Fee Amount ($)', 0, 1000, step=1, key='lien_release_fee')
-                st.slider('Number of Liens / Trusts', 0, 10, step=1, key='lien_trust_qty')
+                brokerage_data, closing_cost_data, misc_data = st.columns(3)
+                with brokerage_data:
+                    st.markdown('##### **Brokerage Cost Data**')
+                    st.slider("Listing Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_listing_company_pct')
+                    st.write('')
+                    st.slider("Selling Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_selling_company_pct')
+                    processing_fee = st.slider('Processing Fee Amount ($)', 0, 20000, step=1, key='processing_fee')
 
-            with misc_data:
-                st.markdown('##### **Miscellaneous Cost Data**')
-                st.slider('Recording Release(s) Fee Amount ($)', 0, 250, step=1, key='recording_release_fee')
-                st.slider('Number of Releases', 0, 10, step=1, key='release_qty')
-                st.slider("Grantor's Tax (%)", 0.0, 1.0, 0.1, step=0.01, format='%.2f', key='update_grantors_tax_pct')
-                st.slider("Congestion Relief Tax (%)", 0.0, 1.0, 0.2, step=0.01, format='%.2f', key='update_congestion_tax_pct')
-                st.slider("Pest Inspection Fee Amount ($)", 0, 100, step=1, key='pest_inspection_fee')
-                st.slider("POA / Condo Disclosure Fee Amount ($)", 0, 500, step=1, key='poa_condo_disclosure_fee')
-                st.text_input('Enter name of another fee, if applicable', key='other_fee_name')
-                st.slider('Enter the amount for the \'Other\' fee, if applicable', 0, 100000, step=1000, key='other_fee_amt')
+                with closing_cost_data:
+                    st.markdown('##### **Closing Cost Data**')
+                    st.slider('Settlement Fee Amount ($)', 0, 1000, step=1, key='settlement_fee')
+                    st.slider('Deed Preparation Fee Amount ($)', 0, 1000, step=1, key='deed_prep_fee')
+                    st.slider('Release of Liens / Trusts Fee Amount ($)', 0, 1000, step=1, key='lien_release_fee')
+                    st.slider('Number of Liens / Trusts', 0, 10, step=1, key='lien_trust_qty')
 
-            submit = st.form_submit_button(label='Calculate Total Net Estimated Proceeds', on_click=update_cma_form)
+                with misc_data:
+                    st.markdown('##### **Miscellaneous Cost Data**')
+                    st.slider('Recording Release(s) Fee Amount ($)', 0, 250, step=1, key='recording_release_fee')
+                    st.slider('Number of Releases', 0, 10, step=1, key='release_qty')
+                    st.slider("Grantor's Tax (%)", 0.0, 1.0, 0.1, step=0.01, format='%.2f', key='update_grantors_tax_pct')
+                    st.slider("Congestion Relief Tax (%)", 0.0, 1.0, 0.2, step=0.01, format='%.2f', key='update_congestion_tax_pct')
+                    st.slider("Pest Inspection Fee Amount ($)", 0, 100, step=1, key='pest_inspection_fee')
+                    st.slider("POA / Condo Disclosure Fee Amount ($)", 0, 500, step=1, key='poa_condo_disclosure_fee')
+                    st.text_input('Enter name of another fee, if applicable', key='other_fee_name')
+                    st.slider('Enter the amount for the \'Other\' fee, if applicable', 0, 100000, step=1000, key='other_fee_amt')
+
+                submit = st.form_submit_button(label='Calculate Total Net Estimated Proceeds', on_click=update_cma_form)
 
     if submit:
         st.write(f'Calculate Estimated Total Net Proceeds: ${st.session_state.estimated_total_net_proceeds}')
