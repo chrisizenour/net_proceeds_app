@@ -168,7 +168,7 @@ def main():
 
             seller_data, buyer_data = st.columns(2)
             with seller_data:
-                st.markdown('##### **Buyer-Specific Data**')
+                st.markdown('##### **Seller-Specific Data**')
                 st.text_input('Enter seller\'s name(s)', key='seller_name')
                 st.text_input("Enter seller's address", key='seller_address')
                 st.slider("Estimated Payoff - First Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_first_trust')
@@ -177,16 +177,14 @@ def main():
                 st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='update_annual_hoa_condo_amt')
 
             with buyer_data:
-                st.markdown('##### **Seller-Specific Data**')
+                st.markdown('##### **Buyer-Specific Data**')
                 st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
                 # st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
                 st.write('')
                 st.write('')
-                # st.write('Closing Cost Subsidy Choice')
-                # st.markdown('**Choose One**')
-                st.write('Default Closing Cost Subsidy is 0% of Recommended List Price')
-                st.write('Leave as-is if there is no Closing Cost Subsidy being requested')
-                st.write('If a Subsidy is being requested choose one option or the other and move slider as necessary')
+                st.markdown('*App Default for Closing Cost Subsidy is 0% of Rec. List Price*')
+                st.markdown('*If no Closing Cost Subsidy is request, leave as-is*')
+                st.markdown('*If a Subsidy is requested, choose appropriate option and adjust associated slider*')
                 st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
                 st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
                 st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
