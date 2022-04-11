@@ -8,14 +8,14 @@ from to_excel import inputs_to_excel
 # https://docs.streamlit.io/library/advanced-features/session-state#initialization
 
 def main():
+    logo = Image.open('freedom_logo.png')
 
     st.set_page_config(
         page_title='Freedom PM & Sales CMA Form',
-        page_icon=':house:',
+        page_icon=logo,
         layout='wide'
     )
 
-    logo = Image.open('freedom_logo.png')
     col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
         st.write('')
