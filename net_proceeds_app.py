@@ -85,7 +85,7 @@ def main():
         st.session_state['annual_hoa_condo_amt'] = 0
         st.session_state['prorated_hoa_condo_amt'] = 0
         st.session_state['rec_list_price'] = 0
-        # st.session_state['down_payment_pct'] = 0.0
+        st.session_state['down_payment_pct'] = 0.0
         st.session_state['closing_subsidy_radio'] = 'Percent of Recommended List Price'
         st.session_state['closing_subsidy_flat_amt'] = 0
         st.session_state['closing_subsidy_pct'] = 0.0
