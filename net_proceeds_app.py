@@ -269,7 +269,7 @@ def main():
                     st.slider('Enter the amount for the \'Other\' fee, if applicable', 0, 100000, step=1000, key='other_fee_amt')
                 other_info_submit = st.form_submit_button('Submit Other Information', on_click=update_other_info_form)
 
-    st.write(st.session_state)
+    # st.write(st.session_state)
 
     proceeds_form = inputs_to_excel(
         agent=st.session_state.preparer,
