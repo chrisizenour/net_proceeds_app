@@ -12,95 +12,37 @@ from openpyxl.worksheet.pagebreak import Break, PageBreak
 from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, Color, colors, numbers, DEFAULT_FONT
 from openpyxl import drawing
 
-def inputs_to_excel(agent,
-                    date,
-                    seller,
-                    address,
-                    first_trust,
-                    second_trust,
-                    annual_taxes,
-                    prorated_taxes,
-                    annual_hoa_condo_amt,
-                    prorated_annual_hoa_condo_amt,
-                    list_price,
-                    down_payment_pct,
-                    closing_subsidy_amt,
-                    listing_company_pct,
-                    selling_company_pct,
-                    processing_fee,
-                    settlement_fee,
-                    deed_preparation_fee,
-                    lien_release_fee,
-                    lien_trust_qty,
-                    recording_release_fee,
-                    recording_release_qty,
-                    grantors_tax_pct,
-                    congestion_tax_pct,
-                    pest_inspection_fee,
-                    poa_condo_disclosure_fee,
-                    other_fee_name,
-                    other_fee_amt,
-                    ):
+def inputs_to_excel(
+        agent,
+        date,
+        seller,
+        address,
+        first_trust,
+        second_trust,
+        annual_taxes,
+        prorated_taxes,
+        annual_hoa_condo_amt,
+        prorated_annual_hoa_condo_amt,
+        list_price,
+        down_payment_pct,
+        closing_subsidy_amt,
+        listing_company_pct,
+        selling_company_pct,
+        processing_fee,
+        settlement_fee,
+        deed_preparation_fee,
+        lien_release_fee,
+        lien_trust_qty,
+        recording_release_fee,
+        recording_release_qty,
+        grantors_tax_pct,
+        congestion_tax_pct,
+        pest_inspection_fee,
+        poa_condo_disclosure_fee,
+        other_fee_name,
+        other_fee_amt,
+):
 
-    preparer = agent
-    prep_date = date
-    seller_name = seller
-    seller_address = address
-    estimated_payoff_first_trust = first_trust
-    estimated_payoff_second_trust = second_trust
-    annual_tax_amt = annual_taxes
-    # prorated_tax_amt = annual_tax_amt / 12 * 3
-    prorated_tax_amt = prorated_taxes
-    annual_hoa_condo_amt = annual_hoa_condo_amt
-    prorated_hoa_condo_amt = prorated_annual_hoa_condo_amt
-    seller_house_cost_subtotal = estimated_payoff_first_trust + estimated_payoff_second_trust + prorated_tax_amt + prorated_hoa_condo_amt
-
-    rec_list_price = list_price
-    down_payment_pct = down_payment_pct
-    down_payment_amt = down_payment_pct * rec_list_price
-    # down_payment_pct_2 = down_payment_pct / 100
-    # down_payment_amt = rec_list_price * down_payment_pct_2
-    # closing_subsidy_flat_amt = 0
-    # closing_subsidy_pct = 3
-    # closing_subsidy_pct_2 = closing_subsidy_pct / 100
-    # figure out closing subsidy amt
-    closing_cost_subsidy_amt = closing_subsidy_amt
-    buyer_house_cost_subtotal = closing_cost_subsidy_amt
-    house_cost_subtotal = seller_house_cost_subtotal + buyer_house_cost_subtotal
-
-    listing_company_pct = listing_company_pct
-    listing_company_amt = listing_company_pct * rec_list_price
-    # listing_company_pct_2 = listing_company_pct / 100
-    # listing_company_amt = listing_company_pct_2 * rec_list_price
-    selling_company_pct = selling_company_pct
-    selling_company_amt = selling_company_pct * rec_list_price
-    # selling_company_pct_2 = selling_company_pct / 100
-    # selling_company_amt = selling_company_pct_2 * rec_list_price
-    processing_fee = processing_fee
-    brokerage_cost_subtotal = listing_company_amt + selling_company_amt + processing_fee
-
-    settlement_fee = settlement_fee
-    deed_prep_fee = deed_preparation_fee
-    lien_release_fee = lien_release_fee
-    lien_trust_qty = lien_trust_qty
-    lien_release_cost = lien_release_fee * lien_trust_qty
-    closing_cost_subtotal = settlement_fee + deed_prep_fee + lien_release_cost
-
-    recording_release_fee = recording_release_fee
-    release_qty = recording_release_qty
-    recording_release_cost = recording_release_fee * release_qty
-    grantors_tax_pct = grantors_tax_pct
-    grantors_tax_amt = grantors_tax_pct * rec_list_price
-    # grantors_tax_pct_2 = grantors_tax_pct / 100
-    # grantors_tax_amt = rec_list_price * grantors_tax_pct_2
-    congestion_tax_pct = congestion_tax_pct
-    congestion_tax_amt = congestion_tax_pct * rec_list_price
-    # congestion_tax_pct_2 = congestion_tax_pct / 100
-    # congestion_tax_amt = rec_list_price * congestion_tax_pct_2
-    pest_inspection_fee = pest_inspection_fee
-    poa_condo_disclosure_fee = poa_condo_disclosure_fee
-    other_fee_amt = other_fee_amt
-    misc_cost_subtotal = recording_release_cost + grantors_tax_amt + congestion_tax_amt + pest_inspection_fee + poa_condo_disclosure_fee + other_fee_amt
 
     wb = Workbook()
     dest_filename = f"net_proceeds_form_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
@@ -108,6 +50,7 @@ def inputs_to_excel(agent,
     ws1 = wb.active
     ws1.title = 'net_proceeds'
     ws1.print_area = 'B2:F56'
+    ws1.set_printer_settings(paper_size=1, orientation='portrait')
     ws1.sheet_properties.pageSetUpPr.fitToPage = True
 
     white_fill = '00FFFFFF'
@@ -119,9 +62,9 @@ def inputs_to_excel(agent,
     hair = Side(border_style='hair')
     DEFAULT_FONT.size = font_size
     ws1.column_dimensions['B'].width = 1.5
-    ws1.column_dimensions['C'].width = 39.0
-    ws1.column_dimensions['D'].width = 39.0
-    ws1.column_dimensions['E'].width = 12.0
+    ws1.column_dimensions['C'].width = 42.83
+    ws1.column_dimensions['D'].width = 42.83
+    ws1.column_dimensions['E'].width = 20.83
     ws1.column_dimensions['F'].width = 1.5
 
     acct_fmt = '_($* #,##0_);[Red]_($* (#,##0);_($* "-"??_);_(@_)'
@@ -158,7 +101,7 @@ def inputs_to_excel(agent,
 
     ws1.merge_cells('C4:E4')
     top_left_cell_two = ws1['C4']
-    top_left_cell_two.value = f'{seller_name} - {seller_address}'
+    top_left_cell_two.value = f'{seller} - {address}'
     top_left_cell_two.font = Font(bold=True)
     # top_left_cell_two.fill = PatternFill('solid', fgColor=white_fill)
     top_left_cell_two.alignment = Alignment(horizontal='center')
@@ -177,7 +120,7 @@ def inputs_to_excel(agent,
     d8.alignment = Alignment(horizontal='right')
 
     e8 = ws1['E8']
-    e8.value = rec_list_price
+    e8.value = list_price
     e8.font = Font(bold=True)
     e8.number_format = acct_fmt
     e8.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -239,7 +182,7 @@ def inputs_to_excel(agent,
     d13.border = Border(top=hair, bottom=hair)
 
     e13 = ws1['E13']
-    e13.value = closing_cost_subsidy_amt
+    e13.value = closing_subsidy_amt
     e13.number_format = acct_fmt
     e13.border = Border(top=hair, bottom=hair, right=thin)
 
@@ -261,14 +204,16 @@ def inputs_to_excel(agent,
     c15.border = Border(top=hair, bottom=thin, left=thin)
 
     d15 = ws1['D15']
+    d15.value = '1 Year of Dues Divided by 12 Multiplied by 3'
     d15.border = Border(top=hair, bottom=thin)
 
     e15 = ws1['E15']
+    e15.value = prorated_annual_hoa_condo_amt
     e15.number_format = acct_fmt
     e15.border = Border(top=hair, bottom=thin, right=thin)
 
     e16 = ws1['E16']
-    e16.value = house_cost_subtotal
+    e16.value = '=SUM(E11:E15)'
     e16.font = Font(bold=True)
     e16.number_format = acct_fmt
     e16.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -288,7 +233,7 @@ def inputs_to_excel(agent,
     d19.border = Border(top=thin, bottom=hair)
 
     e19 = ws1['E19']
-    e19.value = listing_company_amt
+    e19.value = listing_company_pct * list_price
     e19.number_format = acct_fmt
     e19.border = Border(top=thin, bottom=hair, right=thin)
 
@@ -301,7 +246,7 @@ def inputs_to_excel(agent,
     d20.border = Border(top=hair, bottom=hair)
 
     e20 = ws1['E20']
-    e20.value = selling_company_amt
+    e20.value = selling_company_pct * list_price
     e20.number_format = acct_fmt
     e20.border = Border(top=hair, bottom=hair, right=thin)
 
@@ -318,7 +263,7 @@ def inputs_to_excel(agent,
     e21.border = Border(top=hair, bottom=thin, right=thin)
 
     e22 = ws1['E22']
-    e22.value = brokerage_cost_subtotal
+    e22.value = '=SUM(E19:E21)'
     e22.font = Font(bold=True)
     e22.number_format = acct_fmt
     e22.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -351,7 +296,7 @@ def inputs_to_excel(agent,
     d26.border = Border(top=hair, bottom=hair)
 
     e26 = ws1['E26']
-    e26.value = deed_prep_fee
+    e26.value = deed_preparation_fee
     e26.number_format = acct_fmt
     e26.border = Border(top=hair, bottom=hair, right=thin)
 
@@ -360,16 +305,16 @@ def inputs_to_excel(agent,
     c27.border = Border(top=hair, bottom=thin, left=thin)
 
     d27 = ws1['D27']
-    d27.value = 'Common Fee * Qty of Trusts or Liens'
+    d27.value = 'Commonly Used Fee * Qty of Trusts or Liens'
     d27.border = Border(top=hair, bottom=thin)
 
     e27 = ws1['E27']
-    e27.value = lien_release_cost
+    e27.value = lien_release_fee * lien_trust_qty
     e27.number_format = acct_fmt
     e27.border = Border(top=hair, bottom=thin, right=thin)
 
     e28 = ws1['E28']
-    e28.value = closing_cost_subtotal
+    e28.value = '=SUM(E25:E27)'
     e28.font = Font(bold=True)
     e28.number_format = acct_fmt
     e28.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -389,7 +334,7 @@ def inputs_to_excel(agent,
     d31.border = Border(top=thin, bottom=hair)
 
     e31 = ws1['E31']
-    e31.value = recording_release_cost
+    e31.value = recording_release_fee * recording_release_qty
     e31.number_format = acct_fmt
     e31.border = Border(top=thin, bottom=hair, right=thin)
 
@@ -398,11 +343,11 @@ def inputs_to_excel(agent,
     c32.border = Border(top=hair, bottom=hair, left=thin)
 
     d32 = ws1['D32']
-    d32.value = '% of Rec. List Price'
+    d32.value = '% of Recommended List Price'
     d32.border = Border(top=hair, bottom=hair)
 
     e32 = ws1['E32']
-    e32.value = grantors_tax_amt
+    e32.value = grantors_tax_pct * list_price
     e32.number_format = acct_fmt
     e32.border = Border(top=hair, bottom=hair, right=thin)
 
@@ -411,11 +356,11 @@ def inputs_to_excel(agent,
     c33.border = Border(top=hair, bottom=hair, left=thin)
 
     d33 = ws1['D33']
-    d33.value = '% of Rec. List Price'
+    d33.value = '% of Recommended List Price'
     d33.border = Border(top=hair, bottom=hair)
 
     e33 = ws1['E33']
-    e33.value = congestion_tax_amt
+    e33.value = congestion_tax_pct * list_price
     e33.number_format = acct_fmt
     e33.border = Border(top=hair, bottom=hair, right=thin)
 
@@ -437,6 +382,7 @@ def inputs_to_excel(agent,
     c35.border = Border(top=hair, bottom=hair, left=thin)
 
     d35 =ws1['D35']
+    d35.value = 'Commonly Used Fee'
     d35.border = Border(top=hair, bottom=hair)
 
     e35 = ws1['E35']
@@ -457,7 +403,7 @@ def inputs_to_excel(agent,
     e36.border = Border(top=hair, bottom=thin, right=thin)
 
     e37 = ws1['E37']
-    e37.value = misc_cost_subtotal
+    e37.value = '=SUM(E31:E36)'
     e37.font = Font(bold=True)
     e37.number_format = acct_fmt
     e37.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -470,7 +416,7 @@ def inputs_to_excel(agent,
     top_left_cell_four.alignment = Alignment(horizontal='right')
 
     e39 = ws1['E39']
-    e39.value = house_cost_subtotal + brokerage_cost_subtotal + closing_cost_subtotal + misc_cost_subtotal
+    e39.value = '=SUM(E16,E22,E28,E37)'
     e39.font = Font(bold=True)
     e39.number_format = acct_fmt
     e39.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -482,7 +428,7 @@ def inputs_to_excel(agent,
     top_left_cell_five.alignment = Alignment(horizontal='right')
 
     e41 = ws1['E41']
-    e41.value = rec_list_price
+    e41.value = list_price
     e41.font = Font(bold=True)
     e41.number_format = acct_fmt
     e41.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -494,7 +440,7 @@ def inputs_to_excel(agent,
     top_left_cell_six.alignment = Alignment(horizontal='right')
 
     e42 = ws1['E42']
-    e42.value = -(house_cost_subtotal + brokerage_cost_subtotal + closing_cost_subtotal + misc_cost_subtotal)
+    e42.value = '=-SUM(E16,E22,E28,E37)'
     e42.font = Font(bold=True)
     e42.number_format = acct_fmt
     e42.border = Border(top=thin, bottom=thin, left=thin, right=thin)
@@ -506,39 +452,38 @@ def inputs_to_excel(agent,
     top_left_cell_seven.alignment = Alignment(horizontal='right')
 
     e44 = ws1['E44']
-    e44.value = rec_list_price - (house_cost_subtotal + brokerage_cost_subtotal + closing_cost_subtotal + misc_cost_subtotal)
+    e44.value = '=SUM(E41,E42)'
     e44.font = Font(bold=True)
     e44.fill = PatternFill(start_color=yellow_fill, end_color=yellow_fill, fill_type='solid')
     e44.number_format = acct_fmt
     e44.border = Border(top=thin, bottom=thin, left=thin, right=thin)
 
-    # Disclosure Statement
-    ws1.merge_cells('C46:E49')
-    top_left_cell_eight = ws1['C46']
-    top_left_cell_eight.value = '''These estimates are not guaranteed and may not include escrows. Escrow balances are reimbursed by the existing lender. Taxes, rents & association dues are pro-rated at settlement. Under Virginia Law, the seller's proceeds may not be available for up to 2 business days following recording of the deed. Seller acknowledges receipt of this statement.'''
-    top_left_cell_eight.font = Font(italic=True)
-    top_left_cell_eight.alignment = Alignment(wrapText=True)
-
     # Signature Block
-    c51 = ws1['C51']
+    c51 = ws1['C46']
     c51.value = 'PREPARED BY:'
 
-    c52 = ws1['C52']
-    c52.value = preparer
+    c52 = ws1['C47']
+    c52.value = agent
 
-    d51 = ws1['D51']
+    d51 = ws1['D46']
     d51.value = 'SELLER'
 
-    d52 = ws1['D52']
-    d52.value = seller_name
+    d52 = ws1['D47']
+    d52.value = seller
 
     # Freedom Logo
-    # c53 = ws1['C53']
     freedom_logo = drawing.image.Image('freedom_logo.png')
     freedom_logo.height = 80
     freedom_logo.width = 115
-    freedom_logo.anchor = 'C53'
+    freedom_logo.anchor = 'C48'
     ws1.add_image(freedom_logo)
+
+    # Disclosure Statement
+    ws1.merge_cells('C52:E55')
+    top_left_cell_eight = ws1['C52']
+    top_left_cell_eight.value = '''These estimates are not guaranteed and may not include escrows. Escrow balances are reimbursed by the existing lender. Taxes, rents & association dues are pro-rated at settlement. Under Virginia Law, the seller's proceeds may not be available for up to 2 business days following recording of the deed. Seller acknowledges receipt of this statement.'''
+    top_left_cell_eight.font = Font(italic=True)
+    top_left_cell_eight.alignment = Alignment(wrapText=True)
 
     with NamedTemporaryFile() as tmp:
         wb.save(tmp.name)

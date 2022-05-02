@@ -28,15 +28,18 @@ def main():
     password_container = st.container()
     description_container = st.container()
     instruction_container = st.container()
-    form_container = st.container()
+    intro_form_container = st.container()
+    property_container = st.container()
+    common_container = st.container()
+    other_container = st.container()
 
     with disclaimer_container:
-        st.markdown('#### **Disclaimer**')
-        st.markdown(
+        with st.expander('DISCLOSURES'):
+            st.markdown(
+                '''
+            *These estimates are not guaranteed and may not include escrows. Escrow balances are reimbursed by the existing lender. Taxes, rents & association dues are pro-rated at settlement. Under Virginia Law, the seller's proceeds may not be available for up to 2 business days following recording of the deed. Seller acknowledges receipt of this statement.*
             '''
-        *These estimates are not guaranteed and may not include escrows. Escrow balances are reimbursed by the existing lender. Taxes, rents & association dues are pro-rated at settlement. Under Virginia Law, the seller's proceeds may not be available for up to 2 business days following recording of the deed. Seller acknowledges receipt of this statement.*
-        '''
-        )
+            )
 
     with password_container:
         password_guess = st.text_input('Enter a password to gain access to this app', key='password_guess')
@@ -72,195 +75,241 @@ def main():
             )
 
     if 'preparer' not in st.session_state:
-        # st.session_state['cma_form'] = False
-        # st.session_state['password_guess'] = ''
         st.session_state['preparer'] = ''
         st.session_state['prep_date'] = date.today()
+
         st.session_state['seller_name'] = ''
         st.session_state['seller_address'] = ''
+        st.session_state['rec_list_price'] = 0
         st.session_state['estimated_payoff_first_trust'] = 0
         st.session_state['estimated_payoff_second_trust'] = 0
         st.session_state['annual_tax_amt'] = 0
-        st.session_state['prorated_tax_amt'] = 0
+        st.session_state['prorated_tax_amt'] = 0.0
         st.session_state['annual_hoa_condo_amt'] = 0
         st.session_state['prorated_hoa_condo_amt'] = 0
-        st.session_state['rec_list_price'] = 0
+        st.session_state['property_subtotal'] = 0.0
+
         st.session_state['down_payment_pct'] = 0.0
-        st.session_state['closing_subsidy_radio'] = 'Percent of Recommended List Price'
+
+        st.session_state['update_listing_company_pct'] = 2.5
+        st.session_state['listing_company_pct'] = 0.025
+        st.session_state['update_selling_company_pct'] = 2.5
+        st.session_state['selling_company_pct'] = 0.025
+        st.session_state['update_processing_fee'] = 0
+        st.session_state['processing_fee'] = 0
+        st.session_state['update_settlement_fee'] = 450
+        st.session_state['settlement_fee'] = 0
+        st.session_state['update_deed_prep_fee'] = 150
+        st.session_state['deed_prep_fee'] = 0
+        st.session_state['update_lien_release_fee'] = 100
+        st.session_state['lien_release_fee'] = 0
+        st.session_state['update_lien_trust_qty'] = 1
+        st.session_state['lien_trust_qty'] = 0
+        st.session_state['update_recording_release_fee'] = 38
+        st.session_state['recording_release_fee'] = 0
+        st.session_state['update_release_qty'] = 1
+        st.session_state['release_qty'] = 0
+        st.session_state['update_grantors_tax_pct'] = 0.1
+        st.session_state['grantors_tax_pct'] = 0.001
+        st.session_state['update_congestion_tax_pct'] = 0.2
+        st.session_state['congestion_tax_pct'] = 0.002
+        st.session_state['update_pest_inspection_fee'] = 50
+        st.session_state['pest_inspection_fee'] = 0
+        st.session_state['update_poa_condo_disclosure_fee'] = 350
+        st.session_state['poa_condo_disclosure_fee'] = 0
+        st.session_state['common_subtotal'] = 0.0
+
+        st.session_state['closing_subsidy_radio'] = 'Percent of Recommended List Price (%)'
+        st.session_state['update_closing_subsidy_pct'] = 0.0
         st.session_state['closing_subsidy_flat_amt'] = 0
         st.session_state['closing_subsidy_pct'] = 0.0
         st.session_state['closing_subsidy_amt'] = 0
-        st.session_state['listing_company_pct'] = 0.025
-        st.session_state['selling_company_pct'] = 0.025
-        st.session_state['processing_fee'] = 0
-        st.session_state['settlement_fee'] = 450
-        st.session_state['deed_prep_fee'] = 150
-        st.session_state['lien_release_fee'] = 100
-        st.session_state['lien_trust_qty'] = 1
-        st.session_state['recording_release_fee'] = 38
-        st.session_state['release_qty'] = 1
-        st.session_state['grantors_tax_pct'] = 0.001
-        st.session_state['congestion_tax_pct'] = 0.002
-        st.session_state['pest_inspection_fee'] = 50
-        st.session_state['poa_condo_disclosure_fee'] = 350
         st.session_state['other_fee_name'] = ''
         st.session_state['other_fee_amt'] = 0
+        st.session_state['other_subtotal'] = 0.0
+        st.session_state['net_proceeds'] = 0.0
 
-    def update_cma_form():
+    def update_intro_info_form():
+        st.session_state.preparer = st.session_state.preparer
         st.session_state.prep_date = st.session_state.prep_date
-        st.session_state.prorated_tax_amt = st.session_state.update_annual_tax_amt / 12 * 3
-        st.session_state.prorated_hoa_condo_amt = st.session_state.update_annual_hoa_condo_amt / 12 * 3
-        # st.session_state.down_payment_pct = st.session_state.update_down_payment_pct / 100
-        st.session_state.closing_subsidy_pct = st.session_state.update_closing_subsidy_pct / 100
+
+    def update_property_info_form():
+        st.session_state.seller_name = st.session_state.seller_name
+        st.session_state.seller_address = st.session_state.seller_address
+        st.session_state.rec_list_price = st.session_state.rec_list_price
+        st.session_state.estimated_payoff_first_trust = st.session_state.estimated_payoff_first_trust
+        st.session_state.estimated_payoff_second_trust = st.session_state.estimated_payoff_second_trust
+        st.session_state.prorated_tax_amt = st.session_state.annual_tax_amt / 12 * 3
+        st.session_state.prorated_hoa_condo_amt = st.session_state.annual_hoa_condo_amt / 12 * 3
+
+
+    def update_common_info_form():
         st.session_state.listing_company_pct = st.session_state.update_listing_company_pct / 100
         st.session_state.selling_company_pct = st.session_state.update_selling_company_pct / 100
+        st.session_state.processing_fee = st.session_state.update_processing_fee
+        st.session_state.settlement_fee = st.session_state.update_settlement_fee
+        st.session_state.deed_prep_fee = st.session_state.update_deed_prep_fee
+        st.session_state.lien_release_fee = st.session_state.update_lien_release_fee
+        st.session_state.lien_trust_qty = st.session_state.update_lien_trust_qty
+        st.session_state.recording_release_fee = st.session_state.update_recording_release_fee
+        st.session_state.release_qty = st.session_state.update_release_qty
         st.session_state.grantors_tax_pct = st.session_state.update_grantors_tax_pct / 100
         st.session_state.congestion_tax_pct = st.session_state.update_congestion_tax_pct / 100
+        st.session_state.pest_inspection_fee = st.session_state.update_pest_inspection_fee
+        st.session_state.poa_condo_disclosure_fee = st.session_state.update_poa_condo_disclosure_fee
 
-        if st.session_state.closing_subsidy_radio == 'Percent of Recommended List Price':
+    def update_other_info_form():
+        st.session_state.closing_subsidy_pct = st.session_state.update_closing_subsidy_pct / 100
+        if st.session_state.closing_subsidy_radio == 'Percent of Offer Amt (%)':
             st.session_state.closing_subsidy_amt = st.session_state.closing_subsidy_pct * st.session_state.rec_list_price
-        elif st.session_state.closing_subsidy_radio == 'Flat $ Amount':
+        else:
             st.session_state.closing_subsidy_amt = st.session_state.closing_subsidy_flat_amt
+        st.session_state.other_fee_amt = st.session_state.other_fee_amt
 
-        st.session_state.housing_costs_subtotal = (
+    def net_proceeds():
+        st.session_state.property_subtotal = (
                 st.session_state.estimated_payoff_first_trust +
                 st.session_state.estimated_payoff_second_trust +
                 st.session_state.closing_subsidy_amt +
                 st.session_state.prorated_tax_amt +
                 st.session_state.prorated_hoa_condo_amt
-                )
-        st.session_state.brokerage_cost_subtotal = (
-                st.session_state.listing_company_pct * st.session_state.rec_list_price +
-                st.session_state.selling_company_pct * st.session_state.rec_list_price +
-                st.session_state.processing_fee
         )
-        st.session_state.closing_cost_subtotal = (
-                st.session_state.settlement_fee +
-                st.session_state.deed_prep_fee +
-                st.session_state.lien_release_fee * st.session_state.lien_trust_qty
+        st.session_state.common_subtotal = (
+            (st.session_state.listing_company_pct * st.session_state.rec_list_price) +
+            (st.session_state.selling_company_pct * st.session_state.rec_list_price) +
+            (st.session_state.processing_fee) +
+            (st.session_state.deed_prep_fee) +
+            (st.session_state.lien_release_fee * st.session_state.lien_trust_qty) +
+            (st.session_state.recording_release_fee * st.session_state.release_qty) +
+            (st.session_state.grantors_tax_pct * st.session_state.rec_list_price) +
+            (st.session_state.congestion_tax_pct * st.session_state.rec_list_price) +
+            (st.session_state.pest_inspection_fee) +
+            (st.session_state.poa_condo_disclosure_fee)
         )
-        st.session_state.misc_cost_subtotal = (
-                st.session_state.recording_release_fee * st.session_state.release_qty +
-                st.session_state.grantors_tax_pct * st.session_state.rec_list_price +
-                st.session_state.congestion_tax_pct * st.session_state.rec_list_price +
-                st.session_state.pest_inspection_fee +
-                st.session_state.poa_condo_disclosure_fee +
-                st.session_state.other_fee_amt
+        st.session_state.other_subtotal = (
+            st.session_state.other_fee_amt
         )
-        st.session_state.total_cost_of_settlement = (
-                st.session_state.housing_costs_subtotal +
-                st.session_state.brokerage_cost_subtotal +
-                st.session_state.closing_cost_subtotal +
-                st.session_state.misc_cost_subtotal
+        st.session_state.net_proceeds = (
+                st.session_state.rec_list_price -
+                (st.session_state.property_subtotal +
+                 st.session_state.common_subtotal +
+                 st.session_state.other_subtotal)
         )
+        return st.session_state.net_proceeds
 
-        st.session_state.estimated_total_net_proceeds = st.session_state.rec_list_price - st.session_state.total_cost_of_settlement
-        # return estimated_total_net_proceeds
+    with intro_form_container:
+        with st.expander('Introduction Data Form'):
+            with st.form(key='intro_info_form'):
+                st.markdown('##### **Form Preparation Data**')
+                intro_col1, intro_col2 = st.columns(2)
+                with intro_col1:
+                    st.text_input('Enter the preparing agent\'s name', key='preparer')
+                with intro_col2:
+                    st.date_input('Enter preparation date of the form', key='prep_date')
+                intro_info_submit = st.form_submit_button('Submit Information', on_click=update_intro_info_form)
 
-    with form_container:
-        with st.expander('Data Entry'):
-            with st.form(key='cma_form'):
-                st.markdown('##### **From Preparation Data**')
-                st.text_input('Enter the preparing agent\'s name', key='preparer')
-                st.date_input('Enter preparation date of the form', key='prep_date')
-                st.write('')
-                st.write('---')
-                st.write('')
-
-                seller_data, buyer_data = st.columns(2)
-                with seller_data:
-                    st.markdown('##### **Seller-Specific Data**')
+    with property_container:
+        with st.expander('Property Data Form'):
+            with st.form(key='property_info_form'):
+                st.markdown('##### **Property-specific Data**')
+                property_col1, property_col2 = st.columns(2)
+                with property_col1:
                     st.text_input('Enter seller\'s name(s)', key='seller_name')
                     st.text_input("Enter seller's address", key='seller_address')
+                    st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
+                with property_col2:
                     st.slider("Estimated Payoff - First Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_first_trust')
                     st.slider("Estimated Payoff - Second Trust ($)", 0, 1000000, step=1000, key='estimated_payoff_second_trust')
-                    st.slider("Annual Tax Amount ($)", 0, 25000, step=1, key='update_annual_tax_amt')
-                    st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='update_annual_hoa_condo_amt')
+                    st.slider("Annual Tax Amount ($)", 0, 25000, step=1, key='annual_tax_amt')
+                    st.slider('Annual HOA / Condo Amount ($)', 0, 10000, step=1, key='annual_hoa_condo_amt')
+                property_info_submit = st.form_submit_button('Submit Property Information', on_click=update_property_info_form)
 
-                with buyer_data:
-                    st.markdown('##### **Buyer-Specific Data**')
-                    st.slider("Recommended Listing Price ($)", 0, 1500000, step=1000, key='rec_list_price')
-                    # st.slider('Percent Down Payment (%)', 0.0, 100.0, step=0.01, key='update_down_payment_pct')
-                    st.write('')
-                    st.write('')
-                    st.markdown('*App Default for Closing Cost Subsidy is 0% of Rec. List Price*')
-                    st.markdown('*If no Closing Cost Subsidy is requested, leave as-is*')
-                    st.markdown('*If a Subsidy is requested, choose appropriate option and adjust associated slider*')
-                    st.radio('Closing Cost Subsidy Choice', ['Percent of Recommended List Price', 'Flat $ Amount'], key='closing_subsidy_radio')
-                    st.slider('Buyer requests closing cost subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
-                    st.slider('Buyer requests closing cost subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
-                st.write('')
-                st.write('---')
-                st.write('')
-
-                brokerage_data, closing_cost_data, misc_data = st.columns(3)
-                with brokerage_data:
-                    st.markdown('##### **Brokerage Cost Data**')
+    with common_container:
+        with st.expander('Common Data Form'):
+            with st.form(key='common_info_form'):
+                st.markdown('##### **Information Common to All Considered Transactions**')
+                brokerage_col, closing_cost_col, misc_col = st.columns(3)
+                with brokerage_col:
+                    st.markdown('###### **Brokerage Cost Data**')
                     st.slider("Listing Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_listing_company_pct')
-                    st.write('')
                     st.slider("Selling Company's Compensation (%)", 0.0, 6.0, 2.5, step=0.01, format='%.2f', key='update_selling_company_pct')
-                    processing_fee = st.slider('Processing Fee Amount ($)', 0, 20000, step=1, key='processing_fee')
-
-                with closing_cost_data:
-                    st.markdown('##### **Closing Cost Data**')
-                    st.slider('Settlement Fee Amount ($)', 0, 1000, step=1, key='settlement_fee')
-                    st.slider('Deed Preparation Fee Amount ($)', 0, 1000, step=1, key='deed_prep_fee')
-                    st.slider('Release of Liens / Trusts Fee Amount ($)', 0, 1000, step=1, key='lien_release_fee')
-                    st.slider('Number of Liens / Trusts', 0, 10, step=1, key='lien_trust_qty')
-
-                with misc_data:
-                    st.markdown('##### **Miscellaneous Cost Data**')
-                    st.slider('Recording Release(s) Fee Amount ($)', 0, 250, step=1, key='recording_release_fee')
+                    st.slider('Processing Fee Amount ($)', 0, 20000, step=1, key='update_processing_fee')
+                with closing_cost_col:
+                    st.markdown('###### **Closing Cost Data**')
+                    st.slider('Settlement Fee Amount ($)', 0, 1000, step=1, key='update_settlement_fee')
+                    st.slider('Deed Preparation Fee Amount ($)', 0, 1000, step=1, key='update_deed_prep_fee')
+                    st.slider('Release of Liens / Trusts Fee Amount ($)', 0, 1000, step=1, key='update_lien_release_fee')
+                    st.slider('Number of Liens / Trusts', 0, 10, step=1, key='update_lien_trust_qty')
+                with misc_col:
+                    st.markdown('###### **Miscellaneous Cost Data**')
+                    st.slider('Recording Release(s) Fee Amount ($)', 0, 250, step=1, key='update_recording_release_fee')
                     st.slider('Number of Releases', 0, 10, step=1, key='release_qty')
                     st.slider("Grantor's Tax (%)", 0.0, 1.0, 0.1, step=0.01, format='%.2f', key='update_grantors_tax_pct')
                     st.slider("Congestion Relief Tax (%)", 0.0, 1.0, 0.2, step=0.01, format='%.2f', key='update_congestion_tax_pct')
-                    st.slider("Pest Inspection Fee Amount ($)", 0, 100, step=1, key='pest_inspection_fee')
-                    st.slider("POA / Condo Disclosure Fee Amount ($)", 0, 500, step=1, key='poa_condo_disclosure_fee')
+                    st.slider("Pest Inspection Fee Amount ($)", 0, 100, step=1, key='update_pest_inspection_fee')
+                    st.slider("POA / Condo Disclosure Fee Amount ($)", 0, 500, step=1, key='update_poa_condo_disclosure_fee')
+                common_info_submit = st.form_submit_button('Submit Common Information', on_click=update_common_info_form)
+
+    with other_container:
+        with st.expander('Other Data Form'):
+            with st.form(key='other_info_form'):
+                st.markdown('###### Closing Subsidy Data')
+                other_col1, other_col2 = st.columns(2)
+                with other_col1:
+                    st.radio('Closing Cost Subsidy Radio', ['Percent of Recommended List Price (%)', 'Flat $ Amount'], key='closing_subsidy_radio')
+                with other_col2:
+                    st.slider('Closing Cost Subsidy of (%):', 0.0, 100.0, step=0.01, key='update_closing_subsidy_pct')
+                    st.slider('Closing Cost Subsidy of ($):', 0, 100000, step=50, key='closing_subsidy_flat_amt')
+                st.write('---')
+                st.markdown('###### Other Data to be Included')
+                other_col3, other_col4 = st.columns(2)
+                with other_col3:
                     st.text_input('Enter name of another fee, if applicable', key='other_fee_name')
+                with other_col4:
                     st.slider('Enter the amount for the \'Other\' fee, if applicable', 0, 100000, step=1000, key='other_fee_amt')
+                other_info_submit = st.form_submit_button('Submit Other Information', on_click=update_other_info_form)
 
-                submit = st.form_submit_button(label='Calculate Total Net Estimated Proceeds', on_click=update_cma_form)
+    st.write(st.session_state)
 
-    if submit:
-        st.write(f'Calculate Estimated Total Net Proceeds: ${st.session_state.estimated_total_net_proceeds}')
+    proceeds_form = inputs_to_excel(
+        agent=st.session_state.preparer,
+        date=st.session_state.prep_date,
+        seller=st.session_state.seller_name,
+        address=st.session_state.seller_address,
+        first_trust=st.session_state.estimated_payoff_first_trust,
+        second_trust=st.session_state.estimated_payoff_second_trust,
+        annual_taxes=st.session_state.annual_tax_amt,
+        prorated_taxes=st.session_state.prorated_tax_amt,
+        annual_hoa_condo_amt=st.session_state.annual_hoa_condo_amt,
+        prorated_annual_hoa_condo_amt=st.session_state.prorated_hoa_condo_amt,
+        list_price=st.session_state.rec_list_price,
+        down_payment_pct=st.session_state.down_payment_pct,
+        closing_subsidy_amt=st.session_state.closing_subsidy_amt,
+        listing_company_pct=st.session_state.listing_company_pct,
+        selling_company_pct=st.session_state.selling_company_pct,
+        processing_fee=st.session_state.processing_fee,
+        settlement_fee=st.session_state.settlement_fee,
+        deed_preparation_fee=st.session_state.deed_prep_fee,
+        lien_release_fee=st.session_state.lien_release_fee,
+        lien_trust_qty=st.session_state.lien_trust_qty,
+        recording_release_fee=st.session_state.recording_release_fee,
+        recording_release_qty=st.session_state.release_qty,
+        grantors_tax_pct=st.session_state.grantors_tax_pct,
+        congestion_tax_pct=st.session_state.congestion_tax_pct,
+        pest_inspection_fee=st.session_state.pest_inspection_fee,
+        poa_condo_disclosure_fee=st.session_state.poa_condo_disclosure_fee,
+        other_fee_name=st.session_state.other_fee_name,
+        other_fee_amt=st.session_state.other_fee_amt
+    )
 
-    # st.write(st.session_state)
+    st.write(f'Estimated Total Net Proceeds: ${net_proceeds()}', )
 
-        proceeds_form = inputs_to_excel(agent=st.session_state.preparer,
-                                        date=st.session_state.prep_date,
-                                        seller=st.session_state.seller_name,
-                                        address=st.session_state.seller_address,
-                                        first_trust=st.session_state.estimated_payoff_first_trust,
-                                        second_trust=st.session_state.estimated_payoff_second_trust,
-                                        annual_taxes=st.session_state.update_annual_tax_amt,
-                                        prorated_taxes=st.session_state.prorated_tax_amt,
-                                        annual_hoa_condo_amt=st.session_state.annual_hoa_condo_amt,
-                                        prorated_annual_hoa_condo_amt=st.session_state.prorated_hoa_condo_amt,
-                                        list_price=st.session_state.rec_list_price,
-                                        down_payment_pct=st.session_state.down_payment_pct,
-                                        closing_subsidy_amt=st.session_state.closing_subsidy_amt,
-                                        listing_company_pct=st.session_state.listing_company_pct,
-                                        selling_company_pct=st.session_state.selling_company_pct,
-                                        processing_fee=st.session_state.processing_fee,
-                                        settlement_fee=st.session_state.settlement_fee,
-                                        deed_preparation_fee=st.session_state.deed_prep_fee,
-                                        lien_release_fee=st.session_state.lien_release_fee,
-                                        lien_trust_qty=st.session_state.lien_trust_qty,
-                                        recording_release_fee=st.session_state.recording_release_fee,
-                                        recording_release_qty=st.session_state.release_qty,
-                                        grantors_tax_pct=st.session_state.grantors_tax_pct,
-                                        congestion_tax_pct=st.session_state.congestion_tax_pct,
-                                        pest_inspection_fee=st.session_state.pest_inspection_fee,
-                                        poa_condo_disclosure_fee=st.session_state.poa_condo_disclosure_fee,
-                                        other_fee_name=st.session_state.other_fee_name,
-                                        other_fee_amt=st.session_state.other_fee_amt)
-
-        st.download_button(
-            label='Download Net Proceeds Form',
-            data=proceeds_form,
-            mime='xlsx',
-            file_name=f"net_proceeds_form_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
-        )
+    st.download_button(
+        label='Download Net Proceeds Form',
+        data=proceeds_form,
+        mime='xlsx',
+        file_name=f"net_proceeds_form_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    )
 
 
 
