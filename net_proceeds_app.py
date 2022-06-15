@@ -64,6 +64,8 @@ def main():
                 - If preset values do not load, refresh the app, enter app password and check the Common Data Form
                 - Perform this process until preset values appear
                 - Enter known data into applicable fields
+                    - For data that is a percentage, enter the number as the percentage you want
+                    - For example if the Listing Company's Compensation is 2.25%, enter 2.25 into the number input field
                 - After data for each input container is entered, press the container's "Submit" button to load the data into the app
                 - Once all data is entered into all input containers, press "Download Net Proceeds Form"
                 - A MS Excel workbook will be generated and placed into your downloads folder
