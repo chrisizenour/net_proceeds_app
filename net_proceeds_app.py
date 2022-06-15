@@ -302,7 +302,7 @@ def main():
         other_fee_amt=st.session_state.other_fee_amt
     )
 
-    st.write(f'Estimated Total Net Proceeds: ${net_proceeds()}', )
+    # st.write(f'Estimated Total Net Proceeds: ${net_proceeds()}', )
 
     st.download_button(
         label='Download Net Proceeds Form',
