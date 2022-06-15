@@ -60,16 +60,13 @@ def main():
         with st.expander('Instructions'):
             st.markdown(
                 '''
+                - Open the Common Data Form container to check if pre-set values load
+                - If preset values do not load, refresh the app, enter app password and check the Common Data Form
+                - Perform this process until preset values appear
                 - Enter known data into applicable fields
-                - For sliders, move the slider to the general vicinity of the desired value and then use left and right arrows to fine-tune the value
-                    - Some of the sliders have values already preset
-                    - If you want a different value, just move the slider        
-                - When all data is entered, press the 'Calculate Total Net Proceeds' button
-                - After pressing the 'Calculate Total Net Proceeds' button: 
-                    - Total Net Proceeds value will appear
-                    - A new button will appear, 'Download Net Proceeds Form'
-                    - Pressing 'Download Net Proceeds Form' button will download an Excel file
-                    - The file will appear in the browser downloads location
+                - After data for each input container is entered, press the container's "Submit" button to load the data into the app
+                - Once all data is entered into all input containers, press "Download Net Proceeds Form"
+                - A MS Excel workbook will be generated and placed into your downloads folder
                 - The print area of the Excel file has already been set to allow for easy printing to PDF or paper
                 '''
             )
